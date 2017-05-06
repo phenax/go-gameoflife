@@ -174,7 +174,7 @@ func NewPulsarFrame(rows, cols, x, y int) *Frame {
 }
 
 //
-// SetState - Set the state of a cell in frame frame
+// SetState - Set the state of a cell in this frame
 //
 // params
 // -- {int} x

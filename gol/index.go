@@ -5,12 +5,36 @@ import (
 	"time"
 )
 
+const (
+	// FrameDelay - Time to wait before rendering/calculating the next frame
+	FrameDelay = 200 * time.Millisecond
+)
+
+//
+// GameOfLife - gol api
+//
 type GameOfLife struct {
-	Rows         int
-	Columns      int
+
+	// Number of rows in the game
+	Rows int
+
+	// Number of columns
+	Columns int
+
+	// Current rendered frame in the game
 	CurrentFrame *Frame
 }
 
+//
+// NewGameOfLife - Create a new game
+//
+// params
+// -- {int} rows  Number of rows
+// -- {int} cols  Number of columns
+//
+// returns
+// -- {*GameOfLife}
+//
 func NewGameOfLife(rows, cols int) *GameOfLife {
 
 	game := &GameOfLife{
@@ -21,37 +45,59 @@ func NewGameOfLife(rows, cols int) *GameOfLife {
 	return game
 }
 
-func (this *GameOfLife) LoadFrame(frame *Frame) {
-	this.CurrentFrame = frame
+//
+// LoadFrame - Load a new/inital frame into the game
+//
+// params
+// -- {*Frame} frame
+//
+func (frame *GameOfLife) LoadFrame(frame *Frame) {
+	frame.CurrentFrame = frame
 }
 
-func (this *GameOfLife) StartLoop() {
+//
+// StartLoop - Start the calculation and render loop
+//
+func (frame *GameOfLife) StartLoop() {
 
-	go this.StartCalcLoop()
+	// Run the calc loop on a new go routine
+	go frame.StartCalcLoop()
 
 	for {
+		// Clear the terminal
 		fmt.Print("\033[2J")
-		fmt.Print(this.CurrentFrame)
-		time.Sleep(200 * time.Millisecond)
+		// Print the frame
+		fmt.Print(frame.CurrentFrame)
+		// Sleep for some time
+		time.Sleep(FrameDelay)
 	}
 }
 
-func (this *GameOfLife) StartCalcLoop() {
+//
+// StartCalcLoop - Start the calculation loop
+//
+func (frame *GameOfLife) StartCalcLoop() {
 
 	for {
-		this.CalculateNextFrame()
-		time.Sleep(200 * time.Millisecond)
+		// Calculate the next frame
+		frame.CalculateNextFrame()
+		// Sleep for some time
+		time.Sleep(FrameDelay)
 	}
 }
 
-func (this *GameOfLife) CalculateNextFrame() {
+//
+// CalculateNextFrame - Calculate the next frame in the life
+//
+func (frame *GameOfLife) CalculateNextFrame() {
 
-	newFrame := NewEmptyFrame(this.Rows, this.Columns)
+	newFrame := NewEmptyFrame(frame.Rows, frame.Columns)
 
-	this.CurrentFrame.ForEach(func(point bool, x int, y int) bool {
+	frame.CurrentFrame.ForEach(func(point bool, x int, y int) bool {
 
-		neighbourCount := this.CurrentFrame.GetAliveNeighbourCount(x, y)
+		neighbourCount := frame.CurrentFrame.GetAliveNeighbourCount(x, y)
 
+		// GOL rules
 		if point {
 			if neighbourCount == 2 || neighbourCount == 3 {
 				newFrame.SetAlive(x, y)
@@ -67,5 +113,5 @@ func (this *GameOfLife) CalculateNextFrame() {
 		return true
 	})
 
-	this.CurrentFrame = newFrame
+	frame.CurrentFrame = newFrame
 }
