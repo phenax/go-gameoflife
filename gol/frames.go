@@ -41,6 +41,74 @@ func NewGliderFrame(rows, cols, x, y int) *Frame {
 	return frame
 }
 
+func NewSpaceshipFrame(rows, cols, x, y int) *Frame {
+
+	frame := NewEmptyFrame(rows, cols)
+
+	frame.SetAlive(x, y)
+	frame.SetAlive(x, y+2)
+	frame.SetAlive(x+1, y+3)
+	frame.SetAlive(x+2, y+3)
+	frame.SetAlive(x+3, y+3)
+	frame.SetAlive(x+4, y+3)
+	frame.SetAlive(x+4, y+2)
+	frame.SetAlive(x+4, y+1)
+	frame.SetAlive(x+3, y)
+
+	return frame
+}
+
+func NewPulsarFrame(rows, cols, x, y int) *Frame {
+
+	frame := NewEmptyFrame(rows, cols)
+
+	height := 7
+
+	frame.SetAlive(x+2, y)
+	frame.SetAlive(x+3, y)
+	frame.SetAlive(x+4, y)
+	frame.SetAlive(x+8, y)
+	frame.SetAlive(x+9, y)
+	frame.SetAlive(x+10, y)
+
+	for j := 0; j < 3; j++ {
+		frame.SetAlive(x, y+2+j)
+		frame.SetAlive(x+5, y+2+j)
+		frame.SetAlive(x+7, y+2+j)
+		frame.SetAlive(x+12, y+2+j)
+	}
+
+	frame.SetAlive(x+2, y+5)
+	frame.SetAlive(x+3, y+5)
+	frame.SetAlive(x+4, y+5)
+	frame.SetAlive(x+8, y+5)
+	frame.SetAlive(x+9, y+5)
+	frame.SetAlive(x+10, y+5)
+
+	frame.SetAlive(x+2, y+height)
+	frame.SetAlive(x+3, y+height)
+	frame.SetAlive(x+4, y+height)
+	frame.SetAlive(x+8, y+height)
+	frame.SetAlive(x+9, y+height)
+	frame.SetAlive(x+10, y+height)
+
+	for j := 0; j < 3; j++ {
+		frame.SetAlive(x, y+1+j+height)
+		frame.SetAlive(x+5, y+1+j+height)
+		frame.SetAlive(x+7, y+1+j+height)
+		frame.SetAlive(x+12, y+1+j+height)
+	}
+
+	frame.SetAlive(x+2, y+5+height)
+	frame.SetAlive(x+3, y+5+height)
+	frame.SetAlive(x+4, y+5+height)
+	frame.SetAlive(x+8, y+5+height)
+	frame.SetAlive(x+9, y+5+height)
+	frame.SetAlive(x+10, y+5+height)
+
+	return frame
+}
+
 func (this *Frame) SetState(x, y int, state bool) {
 
 	if y < len(this.Points) && y >= 0 {
