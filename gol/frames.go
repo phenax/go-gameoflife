@@ -4,7 +4,7 @@ type Frame struct {
 	Points [][]bool
 }
 
-func EmptyFrame(rows, cols int) *Frame {
+func NewEmptyFrame(rows, cols int) *Frame {
 
 	frame := &Frame{
 		Points: make([][]bool, rows, rows),
@@ -17,13 +17,26 @@ func EmptyFrame(rows, cols int) *Frame {
 	return frame
 }
 
-func BlinkerFrame(rows, cols, x, y int) *Frame {
+func NewBlinkerFrame(rows, cols, x, y int) *Frame {
 
-	frame := EmptyFrame(rows, cols)
+	frame := NewEmptyFrame(rows, cols)
 
 	frame.SetAlive(x, y)
 	frame.SetAlive(x, y+1)
 	frame.SetAlive(x, y+2)
+
+	return frame
+}
+
+func NewGliderFrame(rows, cols, x, y int) *Frame {
+
+	frame := NewEmptyFrame(rows, cols)
+
+	frame.SetAlive(x, y)
+	frame.SetAlive(x+1, y+1)
+	frame.SetAlive(x+1, y+2)
+	frame.SetAlive(x+2, y)
+	frame.SetAlive(x+2, y+1)
 
 	return frame
 }

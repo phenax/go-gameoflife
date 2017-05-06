@@ -12,7 +12,7 @@ const (
 func main() {
 
 	game := gol.NewGameOfLife(numberOfRows, numberOfColumns)
-	initFrame := gol.BlinkerFrame(numberOfRows, numberOfColumns, 6, 6)
+	initFrame := gol.NewGliderFrame(numberOfRows, numberOfColumns, 6, 6)
 
 	game.LoadFrame(initFrame)
 

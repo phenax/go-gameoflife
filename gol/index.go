@@ -46,7 +46,7 @@ func (this *GameOfLife) StartCalcLoop() {
 
 func (this *GameOfLife) CalculateNextFrame() {
 
-	newFrame := EmptyFrame(this.Rows, this.Columns)
+	newFrame := NewEmptyFrame(this.Rows, this.Columns)
 
 	this.CurrentFrame.ForEach(func(point bool, x int, y int) bool {
 
