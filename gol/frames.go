@@ -17,6 +17,17 @@ func EmptyFrame(rows, cols int) *Frame {
 	return frame
 }
 
+func BlinkerFrame(rows, cols, x, y int) *Frame {
+
+	frame := EmptyFrame(rows, cols)
+
+	frame.SetAlive(x, y)
+	frame.SetAlive(x, y+1)
+	frame.SetAlive(x, y+2)
+
+	return frame
+}
+
 func (this *Frame) SetState(x, y int, state bool) {
 
 	if y < len(this.Points) && y >= 0 {

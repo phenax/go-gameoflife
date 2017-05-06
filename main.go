@@ -12,17 +12,9 @@ const (
 func main() {
 
 	game := gol.NewGameOfLife(numberOfRows, numberOfColumns)
-	initFrame := gol.EmptyFrame(numberOfRows, numberOfColumns)
-
-	createInitialFrame(initFrame)
+	initFrame := gol.BlinkerFrame(numberOfRows, numberOfColumns, 6, 6)
 
 	game.LoadFrame(initFrame)
 
 	game.StartLoop()
-}
-
-func createInitialFrame(frame *gol.Frame) {
-	frame.SetAlive(5, 5)
-	frame.SetAlive(5, 6)
-	frame.SetAlive(5, 7)
 }
