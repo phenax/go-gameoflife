@@ -5,7 +5,9 @@ import (
 )
 
 const (
-	numberOfRows    = 40
+	// Number of rows in the grid
+	numberOfRows = 40
+	// Number of columns in the grid
 	numberOfColumns = 40
 )
 

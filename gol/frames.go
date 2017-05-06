@@ -1,9 +1,25 @@
 package gol
 
+//
+// Frame - The properties of a frame in the game
+//
 type Frame struct {
+
+	// Points
+	// Grid of boolean values(alive or dead)
 	Points [][]bool
 }
 
+//
+// NewEmptyFrame - Create an empty frame(all dead)
+//
+// params
+// -- {int} rows  Number of rows
+// -- {int} cols  Number of columns
+//
+// returns
+// -- {*Frame}
+//
 func NewEmptyFrame(rows, cols int) *Frame {
 
 	frame := &Frame{
@@ -17,6 +33,18 @@ func NewEmptyFrame(rows, cols int) *Frame {
 	return frame
 }
 
+//
+// NewBlinkerFrame - Initial state for the blinker life
+//
+// params
+// -- {int} rows
+// -- {int} cols
+// -- {int} x  The start position
+// -- {int} y  The end position
+//
+// returns
+// -- {*Frame}
+//
 func NewBlinkerFrame(rows, cols, x, y int) *Frame {
 
 	frame := NewEmptyFrame(rows, cols)
@@ -28,6 +56,18 @@ func NewBlinkerFrame(rows, cols, x, y int) *Frame {
 	return frame
 }
 
+//
+// NewGliderFrame - Initial state for the glider life
+//
+// params
+// -- {int} rows
+// -- {int} cols
+// -- {int} x
+// -- {int} y
+//
+// returns
+// -- {*Frame}
+//
 func NewGliderFrame(rows, cols, x, y int) *Frame {
 
 	frame := NewEmptyFrame(rows, cols)
@@ -41,6 +81,18 @@ func NewGliderFrame(rows, cols, x, y int) *Frame {
 	return frame
 }
 
+//
+// NewSpaceshipFrame - Initial state for the spaceship life
+//
+// params
+// -- {int} rows
+// -- {int} cols
+// -- {int} x
+// -- {int} y
+//
+// returns
+// -- {*Frame}
+//
 func NewSpaceshipFrame(rows, cols, x, y int) *Frame {
 
 	frame := NewEmptyFrame(rows, cols)
@@ -58,6 +110,18 @@ func NewSpaceshipFrame(rows, cols, x, y int) *Frame {
 	return frame
 }
 
+//
+// NewPulsarFrame - Initial state for the pulsar life
+//
+// params
+// -- {int} rows
+// -- {int} cols
+// -- {int} x
+// -- {int} y
+//
+// returns
+// -- {*Frame}
+//
 func NewPulsarFrame(rows, cols, x, y int) *Frame {
 
 	frame := NewEmptyFrame(rows, cols)
@@ -109,39 +173,56 @@ func NewPulsarFrame(rows, cols, x, y int) *Frame {
 	return frame
 }
 
-func (this *Frame) SetState(x, y int, state bool) {
+//
+// SetState - Set the state of a cell in frame frame
+//
+// params
+// -- {int} x
+// -- {int} y
+// -- {bool} state New state
+//
+func (frame *Frame) SetState(x, y int, state bool) {
 
-	if y < len(this.Points) && y >= 0 {
-
-		row := this.Points[y]
-
-		if x < len(row) && x >= 0 {
-			this.Points[y][x] = state
+	if y < len(frame.Points) && y >= 0 {
+		if x < len(frame.Points[y]) && x >= 0 {
+			frame.Points[y][x] = state
 		}
 	}
 }
 
-func (this *Frame) SetAlive(x, y int) {
-	this.SetState(x, y, true)
+// SetAlive - Set the state of a cell to alive
+func (frame *Frame) SetAlive(x, y int) {
+	frame.SetState(x, y, true)
 }
 
-func (this *Frame) SetDead(x, y int) {
-	this.SetState(x, y, false)
+// SetDead - Set the state of a cell to dead
+func (frame *Frame) SetDead(x, y int) {
+	frame.SetState(x, y, false)
 }
 
-func (this *Frame) GetAliveNeighbourCount(x, y int) int {
+//
+// GetAliveNeighbourCount - Get the number of alive neighbors for a cell
+//
+// params
+// -- {int} x
+// -- {int} y
+//
+// returns
+// -- {int} Neighbour count
+//
+func (frame *Frame) GetAliveNeighbourCount(x, y int) int {
 
 	aliveCount := 0
 
 	for i := -1; i <= 1; i++ {
 
-		if y+i < len(this.Points) && y+i >= 0 {
+		if y+i < len(frame.Points) && y+i >= 0 {
 
 			for j := -1; j <= 1; j++ {
 
 				if i != 0 || j != 0 {
 
-					row := this.Points[y+i]
+					row := frame.Points[y+i]
 
 					if x+j < len(row) && x+j >= 0 {
 
@@ -157,11 +238,12 @@ func (this *Frame) GetAliveNeighbourCount(x, y int) int {
 	return aliveCount
 }
 
-func (this *Frame) String() string {
+// String - Convert the frame to a string
+func (frame *Frame) String() string {
 
 	str := ""
 
-	this.ForEachRow(func(row []bool, _ int) {
+	frame.ForEachRow(func(row []bool, _ int) {
 
 		for _, point := range row {
 
@@ -180,16 +262,22 @@ func (this *Frame) String() string {
 	return str
 }
 
-func (this *Frame) ForEachRow(callback func([]bool, int)) {
+//
+// ForEachRow - Iterate through all rows in a frame
+//
+func (frame *Frame) ForEachRow(callback func([]bool, int)) {
 
-	for i, row := range this.Points {
+	for i, row := range frame.Points {
 		callback(row, i)
 	}
 }
 
-func (this *Frame) ForEach(callback func(bool, int, int) bool) {
+//
+// ForEach - Iterate through all cells in a frame
+//
+func (frame *Frame) ForEach(callback func(bool, int, int) bool) {
 
-	this.ForEachRow(func(row []bool, y int) {
+	frame.ForEachRow(func(row []bool, y int) {
 
 		for x, point := range row {
 
