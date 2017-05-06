@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/phenax/go-gameoflife/gol"
 )
 
@@ -14,13 +12,11 @@ const (
 func main() {
 
 	game := gol.NewGameOfLife(numberOfRows, numberOfColumns)
-	initFrame := gol.NewFrame(numberOfRows, numberOfColumns)
+	initFrame := gol.EmptyFrame(numberOfRows, numberOfColumns)
 
 	createInitialFrame(initFrame)
 
 	game.LoadFrame(initFrame)
-
-	fmt.Println(initFrame)
 
 	game.StartLoop()
 }

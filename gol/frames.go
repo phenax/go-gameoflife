@@ -4,7 +4,7 @@ type Frame struct {
 	Points [][]bool
 }
 
-func NewFrame(rows, cols int) *Frame {
+func EmptyFrame(rows, cols int) *Frame {
 
 	frame := &Frame{
 		Points: make([][]bool, rows, rows),
@@ -45,11 +45,11 @@ func (this *Frame) GetAliveNeighbourCount(x, y int) int {
 
 		if y+i < len(this.Points) && y+i >= 0 {
 
-			row := this.Points[y+i]
-
 			for j := -1; j <= 1; j++ {
 
 				if i != 0 || j != 0 {
+
+					row := this.Points[y+i]
 
 					if x+j < len(row) && x+j >= 0 {
 
@@ -67,7 +67,7 @@ func (this *Frame) GetAliveNeighbourCount(x, y int) int {
 
 func (this *Frame) String() string {
 
-	str := "\033[2J"
+	str := ""
 
 	this.ForEachRow(func(row []bool, _ int) {
 
@@ -97,9 +97,9 @@ func (this *Frame) ForEachRow(callback func([]bool, int)) {
 
 func (this *Frame) ForEach(callback func(bool, int, int) bool) {
 
-	this.ForEachRow(func(row []bool, x int) {
+	this.ForEachRow(func(row []bool, y int) {
 
-		for y, point := range row {
+		for x, point := range row {
 
 			continueLoop := callback(point, x, y)
 

@@ -30,6 +30,7 @@ func (this *GameOfLife) StartLoop() {
 	go this.StartCalcLoop()
 
 	for {
+		fmt.Print("\033[2J")
 		fmt.Print(this.CurrentFrame)
 		time.Sleep(200 * time.Millisecond)
 	}
@@ -45,22 +46,26 @@ func (this *GameOfLife) StartCalcLoop() {
 
 func (this *GameOfLife) CalculateNextFrame() {
 
+	newFrame := EmptyFrame(this.Rows, this.Columns)
+
 	this.CurrentFrame.ForEach(func(point bool, x int, y int) bool {
 
 		neighbourCount := this.CurrentFrame.GetAliveNeighbourCount(x, y)
 
 		if point {
 			if neighbourCount == 2 || neighbourCount == 3 {
-				this.CurrentFrame.SetAlive(x, y)
+				newFrame.SetAlive(x, y)
 			} else {
-				this.CurrentFrame.SetDead(x, y)
+				newFrame.SetDead(x, y)
 			}
 		} else {
 			if neighbourCount == 3 {
-				this.CurrentFrame.SetAlive(x, y)
+				newFrame.SetAlive(x, y)
 			}
 		}
 
 		return true
 	})
+
+	this.CurrentFrame = newFrame
 }
